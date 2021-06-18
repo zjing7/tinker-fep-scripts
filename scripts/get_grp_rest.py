@@ -99,7 +99,7 @@ def target_disp(weights, coord, alpha=0.1):
 
     return loss
 
-def find_grp_idx(fxyz, ligidx0, atomnames='CA', rcutoff=1.2, alpha=1.0):
+def find_grp_idx(fxyz, ligidx0, atomnames='CA', rcutoff=1.2, alpha=1.0, extend=None):
     try:
         t = md.load_arc(fxyz)
     except IOError:
@@ -109,7 +109,12 @@ def find_grp_idx(fxyz, ligidx0, atomnames='CA', rcutoff=1.2, alpha=1.0):
         error_exit("No ligand heavy atoms found")
 
     protidx0 = t.topology.select('name %s'%(atomnames))
-    protidx0 = np.array(sorted(set(protidx0) - set(ligidx)))
+    idx0 = list(protidx0)
+    if extend is not None:
+        for delta_i in extend:
+            idx0 += [_+delta_i for _ in protidx0]
+    #protidx0 = np.array(sorted(set(protidx0) - set(ligidx)))
+    protidx0 = np.array(sorted(set(idx0) - set(ligidx)))
 
     distmat = distance_matrix(t.xyz[0, ligidx, :], t.xyz[0, protidx0, :])
     distpro = np.min(distmat, axis=0)
@@ -203,8 +208,8 @@ def main():
     # try a few parameters and choose the best solution
     for r0 in (0.5, 0.6, 0.7):
         for a in (1.0, 0.5, 0.2):
-            rmin, outp = find_grp_idx(fxyz, ligidx, 'CA C', r0, alpha=a)
-            #rmin, outp = find_grp_idx(fxyz, ligidx, 'CA CB', r0, alpha=a)
+            #rmin, outp = find_grp_idx(fxyz, ligidx, 'CA C', r0, alpha=a)
+            rmin, outp = find_grp_idx(fxyz, ligidx, 'CA CB', r0, alpha=a, extend=(-1, 1, 2))
             if res is None or rmin < res[0]:
                 res = rmin, outp
             if rmin < r_thr:
