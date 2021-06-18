@@ -1,0 +1,12 @@
+name: tfep
+channels: 
+  - conda-forge
+  - openbabel
+dependencies:
+  - python=3.7
+  - git
+  - numpy
+  - scipy
+  - mdtraj
+  - pymbar
+  - openbabel=2.4.1
