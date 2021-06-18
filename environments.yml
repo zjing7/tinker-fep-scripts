@@ -1,5 +1,0 @@
-conda create -n tfep python=3.7
-conda activate tfep
-conda install numpy scipy --yes
-conda install -c conda-forge mdtraj pymbar --yes
-conda install -c openbabel openbabel=2.4.1 --yes
