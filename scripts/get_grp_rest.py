@@ -209,7 +209,7 @@ def main():
     for r0 in (0.5, 0.6, 0.7):
         for a in (1.0, 0.5, 0.2):
             #rmin, outp = find_grp_idx(fxyz, ligidx, 'CA C', r0, alpha=a)
-            rmin, outp = find_grp_idx(fxyz, ligidx, 'CA CB', r0, alpha=a, extend=(-1, 1, 2))
+            rmin, outp = find_grp_idx(fxyz, ligidx, 'CA ', r0, alpha=a, extend=(-1, 1, 2))
             if res is None or rmin < res[0]:
                 res = rmin, outp
             if rmin < r_thr:
