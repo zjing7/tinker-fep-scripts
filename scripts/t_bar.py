@@ -239,6 +239,18 @@ def read_tinker_bars(inplist, temp=298, press=1.0, ibegin=0, iend=-1):
     return None
   return u1s, u2s, temps
 
+def calc_tinker_pv(arr1, press=1.0):
+  PV_UNIT_CONV = 1e5*1e-30/4184*6.02e23
+  if arr1.shape[1] >= 4:
+    pv1 = press*arr1[:, 3:4]*PV_UNIT_CONV
+  else:
+    pv1 = 0
+  return pv1
+def calc_tinker_reduced(arr1, beta, press=1.0):
+  pv1 = calc_tinker_pv(arr1, press=press)
+  u1 = beta*(arr1[:, 1:3] + pv1)
+  return u1
+
 def read_tinker_bar(inp, temp=298, press=1.0):
   #beta = 1.0/(8.314*temp/4184)
   # bar * ang^3 in kcal/mol
@@ -266,11 +278,11 @@ def read_tinker_bar(inp, temp=298, press=1.0):
       print("nlines (%d) != %d + %d"%(len(lines), n1, n2))
       return
 
-    arr1 = np.fromstring(''.join(lines[1:n1+1]), sep=' ').reshape(-1, 4)
-    arr2 = np.fromstring(''.join(lines[n1+2:]), sep=' ').reshape(-1, 4)
+    arr1 = np.fromstring(''.join(lines[1:n1+1]), sep=' ').reshape(n1, -1)
+    arr2 = np.fromstring(''.join(lines[n1+2:]), sep=' ').reshape(n2, -1)
 
-    u1 = beta1*(arr1[:, 1:3] + press*arr1[:, 3:4]*PV_UNIT_CONV)
-    u2 = beta2*(arr2[:, 1:3] + press*arr2[:, 3:4]*PV_UNIT_CONV)
+    u1 = calc_tinker_reduced(arr1, beta=beta1, press=press)
+    u2 = calc_tinker_reduced(arr2, beta=beta2, press=press)
     #return (np.concatenate((u1[idx1], u2[idx2]), axis=0).transpose(), [len(idx1), len(idx2)], msg)
     return u1, u2, temp1
 
@@ -386,7 +398,8 @@ def sum_df_list(dflist):
 
   idx0 = dflist[0].index
   for df1 in dflist[1:]:
-    idx0 = idx0 & df1.index
+    #idx0 = idx0 & df1.index
+    idx0 = idx0.intersection(df1.index)
   df2list = []
   df3 = pd.DataFrame(columns=dflist[0].columns)
   for row in idx0:
