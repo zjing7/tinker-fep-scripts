@@ -1,0 +1,64 @@
+
+     ######################################################################
+   ##########################################################################
+  ###                                                                      ###
+ ###            Tinker  ---  Software Tools for Molecular Design            ###
+ ##                                                                          ##
+ ##                         Version 8.9.2  June 2021                         ##
+ ##                                                                          ##
+ ##               Copyright (c)  Jay William Ponder  1990-2021               ##
+ ###                           All Rights Reserved                          ###
+  ###                                                                      ###
+   ##########################################################################
+     ######################################################################
+
+
+ Simulation Trajectory A and Thermodynamic State 0 :  
+
+ 
+ Number of Frames :        2500
+ Temperature :           298.00
+
+ Simulation Trajectory B and Thermodynamic State 1 :  
+
+ 
+ Number of Frames :        2500
+ Temperature :           298.00
+
+ Free Energy Difference via FEP Method :
+
+ Free Energy via Forward FEP              -1.4493 +/-   0.1093 Kcal/mol
+ Free Energy via Backward FEP             -1.7560 +/-   0.0252 Kcal/mol
+
+ Free Energy Difference via BAR Method :
+
+ BAR Iteration   0                        -1.7376 Kcal/mol
+ BAR Iteration   1                        -1.6705 Kcal/mol
+ BAR Iteration   2                        -1.6736 Kcal/mol
+ BAR Iteration   3                        -1.6735 Kcal/mol
+ BAR Iteration   4                        -1.6735 Kcal/mol
+
+ Free Energy via BAR Iteration            -1.6735 +/-   0.0290 Kcal/mol
+ Free Energy via BAR Bootstrap            -1.6736 +/-   0.0164 Kcal/mol
+
+ Enthalpy from Potential Energy Averages :
+
+ Average Energy for State 0          -119411.8231 +/-   4.8033 Kcal/mol
+ Average Energy for State 1          -119400.6040 +/-   4.8604 Kcal/mol
+ Enthalpy via Direct Estimate             11.2192 +/-   6.8366 Kcal/mol
+
+ Enthalpy and Entropy via FEP Method :
+
+ Enthalpy via Forward FEP                 18.6390 +/-  20.3507 Kcal/mol
+ Entropy via Forward FEP                 0.067411 Kcal/mol/K
+ Forward FEP -T*dS Value                 -20.0883 Kcal/mol
+
+ Enthalpy via Backward FEP                 9.8648 +/-  24.4317 Kcal/mol
+ Entropy via Backward FEP                0.038996 Kcal/mol/K
+ Backward FEP -T*dS Value                -11.6208 Kcal/mol
+
+ Enthalpy and Entropy via BAR Method :
+
+ Enthalpy via BAR Estimate                -2.1088 +/-   7.7745 Kcal/mol
+ Entropy via BAR Estimate               -0.001460 Kcal/mol/K
+ BAR Estimate of -T*dS                     0.4351 Kcal/mol
