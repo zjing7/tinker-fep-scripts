@@ -558,8 +558,8 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
   otherwise combine all files
   '''
   if seperate and len(flist) > 1:
-    dflist = []
     df1list = []
+    df1slist = []
     df_block_list = []
     names_block = []
     if outfile is None:
@@ -569,31 +569,31 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
     for f1 in flist:
       print(add_line('Analysis of %s'%f1))
       df1, df1sum, data_block = calc_dg([f1], **kwargs)
-      dflist.append(df1sum)
-      df1list.append(df1)
+      df1list.append(df1sum)
+      df1slist.append(df1)
       df_block_list.append(data_block[1])
       names_block = data_block[0]
     df_blocks = [sum_df_list(_) for _ in zip(*df_block_list)]
     print(add_line('Sum of %d files %s'%(len(flist), list_to_string(flist))))
-    df3 = sum_df_list(df1list)
+    df_total = sum_df_list(df1slist)
     for name, df_block in zip(names_block, df_blocks):
-        df3.loc['blockave_%s'%name, :] = compute_block_ave(df_block)
-    print(df3.to_string())
-    df2 = pd.concat(dflist, axis=0)
-    #df2 = pd.DataFrame(df2.to_numpy(), index=flist, columns=df2.columns)
-    df2.set_axis(flist, axis=0, inplace=True)
-    #df2.reindex(flist)
-    #df2.loc['Total', :] = compute_total_sd(df2)
-    df2.loc['Total', :] = get_summary(df3, verbose=False).iloc[0, :].to_numpy()
+        df_total.loc['blockave_%s'%name, :] = compute_block_ave(df_block)
+    print(df_total.to_string())
+    df_sum = pd.concat(df1list, axis=0)
+    #df_sum = pd.DataFrame(df_sum.to_numpy(), index=flist, columns=df_sum.columns)
+    df_sum.set_axis(flist, axis=0, inplace=True)
+    #df_sum.reindex(flist)
+    #df_sum.loc['Total', :] = compute_total_sd(df_sum)
+    df_sum.loc['Total', :] = get_summary(df_total, verbose=False).iloc[0, :].to_numpy()
     for col in 'nA nB'.split():
-      if col in df2.columns:
-        df2.loc['Total', col] = df2[col].iloc[:-1].sum()
+      if col in df_sum.columns:
+        df_sum.loc['Total', col] = df_sum[col].iloc[:-1].sum()
 
     print(add_line('SUMMARY'))
-    print(df2.to_string(), file=fout)
+    print(df_sum.to_string(), file=fout)
     if outfile is not None:
       fout.close()
-    return df2
+    return df_sum
   else:
     df1, df1sum, _ = calc_dg(flist, **kwargs)
     return df1sum
