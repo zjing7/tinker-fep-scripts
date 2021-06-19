@@ -87,7 +87,7 @@ def calc_eff_size(arr, equil=False):
   return t0, g
   '''
   arr1 = convert_1d(arr)
-  if len(arr1) == 0:
+  if len(arr1) <= 10:
     return 0, 1
   NBLOCK = 71
   nskip = max(1, len(arr1)//NBLOCK)
@@ -465,7 +465,7 @@ def get_summary(df1, verbose=True):
 
 def calc_dg(flist, ibegin=0, iend=-1, nblocks=5, summary=True, verbose=True):
   NBLOCK = nblocks
-  NMIN = 100
+  NMIN = 10 #min number of data points
   names = 'all uncorr equ'.split()
   opts = [{'equil':False, 'corr':False}, 
           {'equil':False, 'corr':True},
