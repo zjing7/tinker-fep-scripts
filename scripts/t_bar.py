@@ -558,8 +558,8 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
   otherwise combine all files
   '''
   if seperate and len(flist) > 1:
-    df1list = []
     df1slist = []
+    df1list = []
     df_block_list = []
     names_block = []
     if outfile is None:
@@ -569,17 +569,17 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
     for f1 in flist:
       print(add_line('Analysis of %s'%f1))
       df1, df1sum, data_block = calc_dg([f1], **kwargs)
-      df1list.append(df1sum)
-      df1slist.append(df1)
+      df1slist.append(df1sum)
+      df1list.append(df1)
       df_block_list.append(data_block[1])
       names_block = data_block[0]
     df_blocks = [sum_df_list(_) for _ in zip(*df_block_list)]
     print(add_line('Sum of %d files %s'%(len(flist), list_to_string(flist))))
-    df_total = sum_df_list(df1slist)
+    df_total = sum_df_list(df1list)
     for name, df_block in zip(names_block, df_blocks):
         df_total.loc['blockave_%s'%name, :] = compute_block_ave(df_block)
     print(df_total.to_string())
-    df_sum = pd.concat(df1list, axis=0)
+    df_sum = pd.concat(df1slist, axis=0)
     #df_sum = pd.DataFrame(df_sum.to_numpy(), index=flist, columns=df_sum.columns)
     df_sum.set_axis(flist, axis=0, inplace=True)
     #df_sum.reindex(flist)
