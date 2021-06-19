@@ -593,8 +593,10 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
     print(df2.to_string(), file=fout)
     if outfile is not None:
       fout.close()
+    return df2
   else:
     df1, df1sum, _ = calc_dg(flist, **kwargs)
+    return df1sum
 
 def main():
   parser = argparse.ArgumentParser(prog='t_bar.py', usage='%(prog)s [options]', description=__doc__)
