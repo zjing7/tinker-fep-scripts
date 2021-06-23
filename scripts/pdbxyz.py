@@ -531,7 +531,7 @@ def get_new_resname(inpfile, pref='R'):
 def main():
     parser = argparse.ArgumentParser(prog='pdbxyz.py', usage='%(prog)s [options]', description=__doc__)
     parser.add_argument('-m', nargs='?', metavar='mode', choices=['pdbxyz2lib', 'pdb2xyz', 'xyz2pdb', 'xyz2lib'], default='pdb2xyz', help='[pdbxyz2lib|pdb2xyz|xyz2pdb] pdbxyz2lib: Generate library file from PDB and XYZ; pdb2xyz: Convert PDB to XYZ using library file; xyz2pdb: Convert XYZ to PDB')
-    parser.add_argument('-p', nargs='+', metavar='PDB', required=True, help='PDB file(s)')
+    parser.add_argument('-p', nargs='+', metavar='PDB', required=False, help='PDB file(s)')
     parser.add_argument('-x', nargs='+', metavar='XYZ', required=True, help='TINKER XYZ file(s)')
     parser.add_argument('-t', nargs='?', metavar='TEMPLATE', required=False, help='Library file')
     parser.add_argument('-k', nargs='?', metavar='KEY', required=False, help='Library file')
@@ -543,19 +543,19 @@ def main():
     biotype = 'pro'
     if v.nuc:
         biotype = 'nuc'
-    if v.m == 'pdbxyz2lib':
+    if v.m == 'pdbxyz2lib' and v.x and v.t and v.p:
         if v.app:
             outfile = v.t
         else:
             outfile = None
         pdbxyz_to_lib(v.p, v.x, biotype, outfile)
-    elif v.m == 'pdb2xyz':
+    elif v.m == 'pdb2xyz' and v.p and v.x:
         for i in range(min(len(v.p), len(v.x))):
             pdb_to_xyz(v.p[i], v.x[i], v.t)
-    elif v.m == 'xyz2pdb':
+    elif v.m == 'xyz2pdb' and v.x and v.p:
         for i in range(min(len(v.p), len(v.x))):
             xyz_to_pdb(v.p[i], v.x[i], v.t)
-    elif v.m == 'xyz2lib':
+    elif v.m == 'xyz2lib' and v.x and v.t:
         if v.r is None:
             resname = get_new_resname(v.t)
         else:
