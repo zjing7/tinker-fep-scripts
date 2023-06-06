@@ -89,6 +89,8 @@ def calc_eff_size(arr, equil=False):
   arr1 = convert_1d(arr)
   if len(arr1) <= 10:
     return 0, 1
+  if np.std(arr1) == 0:
+    return 0, 1
   NBLOCK = 71
   nskip = max(1, len(arr1)//NBLOCK)
   t0 = 0
@@ -581,7 +583,11 @@ def calc_dg_summary(flist, seperate=False, outfile=None, **kwargs):
     print(df_total.to_string())
     df_sum = pd.concat(df1slist, axis=0)
     #df_sum = pd.DataFrame(df_sum.to_numpy(), index=flist, columns=df_sum.columns)
-    df_sum.set_axis(flist, axis=0, inplace=True)
+    # DataFrame.set_axis 'inplace' keyword is deprecated
+    try:
+        df_sum = df_sum.set_axis(flist, axis=0, copy=False)
+    except:
+        df_sum.set_axis(flist, axis=0, inplace=True)
     #df_sum.reindex(flist)
     #df_sum.loc['Total', :] = compute_total_sd(df_sum)
     df_sum.loc['Total', :] = get_summary(df_total, verbose=False).iloc[0, :].to_numpy()
